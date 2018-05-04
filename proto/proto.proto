@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+import "google/protobuf/any.proto";
+
+service Service {
+	rpc CreateThingOneOf (CreateThingOneOfRequest) returns (CreateThingOneOfResponse) {}
+	rpc CreateThingAny (CreateThingAnyRequest) returns (CreateThingAnyResponse) {}
+}
+
+message CreateThingOneOfRequest {
+	string Name = 1;
+}
+
+message CreateThingOneOfResponse {
+	oneof Result {
+		Thing Thing = 1;
+		Error Error = 2;
+	}
+}
+
+message CreateThingAnyRequest {
+	string Name = 1;
+}
+
+message CreateThingAnyResponse {
+	google.protobuf.Any Result = 2;
+}
+
+message Thing {
+	string ID = 1;
+	string Name = 2;
+}
+
+
+enum ErrorCode {
+	Reserved = 0;
+	One = 1;
+	Two = 2;
+	Three = 3;
+}
+
+message Error {
+	ErrorCode Code = 1;
+	string Message = 2;
+	string Service = 3;
+	map<string, string> Details = 4;
+}
